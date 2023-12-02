@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player_movement : MonoBehaviour
 {
+    public LayerMask grassLayer;
     public float moveSpeed;
     private bool isMoving;
 
@@ -51,5 +52,15 @@ public class Player_movement : MonoBehaviour
         transform.position = targetPos;
 
         isMoving = false;
+
+        CheckForEncounters();
+    }
+
+    private void CheckForEncounters()
+    {
+        if(Physics2D.OverlapCircle(transform.position, 0.2f, grassLayer) != null)
+        {
+            Debug.Log("Entered in zone");
+        }
     }
 }
