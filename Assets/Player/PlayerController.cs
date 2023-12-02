@@ -9,6 +9,12 @@ public class Player_movement : MonoBehaviour
 
     private Vector2 input;
 
+    private Animator animator;
+    private void Awake()
+    {
+        animator = GetComponent<Animator>(); 
+    }
+
     private void Update()
     {
         if (!isMoving)
@@ -16,8 +22,13 @@ public class Player_movement : MonoBehaviour
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
 
+            // remove diagonal movement
+            if (input.x != 0) input.y = 0;
+
             if (input != Vector2.zero)
             {
+                animator.SetFloat("moveX", input.x);
+                animator.SetFloat("moveY", input.y);
                 var targetPos = transform.position;
                 targetPos.x += input.x;
                 targetPos.y += input.y;
@@ -25,6 +36,7 @@ public class Player_movement : MonoBehaviour
                 StartCoroutine(Move(targetPos));
             }
         }
+        animator.SetBool("isMoving", isMoving);
     }
 
     IEnumerator Move(Vector3 targetPos)
